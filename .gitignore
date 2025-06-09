@@ -1,0 +1,19 @@
+# IntelliJ/IDEA
+.idea/
+*.iml
+
+# Maven
+target/
+
+# Java logit yms.
+*.log
+
+# System files
+.DS_Store
+Thumbs.db
+
+# IDE-temp
+*.swp
+
+/project-demo/.idea/
+.env
