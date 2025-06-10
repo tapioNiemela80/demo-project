@@ -19,26 +19,24 @@ import java.util.stream.Collectors;
 @Table("projects")
 public class Project implements Persistable<UUID> {
     @Id
-    private UUID id;
-    private String name;
-    private String description;
-    private LocalDateTime createdAt;
-    private LocalDate plannedEndDate;
-    private ProjectStatus status;
+    private final UUID id;
+    private final String name;
+    private final String description;
+    private final LocalDateTime createdAt;
+    private final LocalDate plannedEndDate;
+    private final ProjectStatus status;
     @Version
-    private int version;
-
+    private final int version;
     @Column("initial_estimated_time_hours")
-    private int initialEstimationHours;
-
+    private final int initialEstimationHours;
     @Column("initial_estimated_time_minutes")
-    private int initialEstimationMinutes;
+    private final int initialEstimationMinutes;
 
     @MappedCollection(idColumn = "project_id", keyColumn = "id")
-    private Set<ProjectTask> tasks;
+    private final Set<ProjectTask> tasks;
 
     @MappedCollection(idColumn = "project_id", keyColumn = "id")
-    private Set<ContactPerson> contactPerson;
+    private final Set<ContactPerson> contactPerson;
 
     @Transient
     private final transient boolean isNew;

@@ -17,15 +17,15 @@ import java.util.stream.Collectors;
 @Table("teams")
 public class Team implements Persistable<UUID> {
     @Id
-    private UUID id;
-    private String name;
+    private final UUID id;
+    private  final String name;
     @Version
-    private int version;
+    private  final int version;
     @MappedCollection(idColumn = "team_id", keyColumn = "id")
-    private Set<TeamMember> members;
+    private  final Set<TeamMember> members;
 
     @MappedCollection(idColumn = "team_id", keyColumn = "id")
-    private Set<TeamTask> tasks;
+    private  final Set<TeamTask> tasks;
 
     @Transient
     private final transient boolean isNew;
@@ -82,7 +82,7 @@ public class Team implements Persistable<UUID> {
     private void verifyTaskCanBeDeleted(TeamTaskId taskId) {
         var canBeDeleted = tasks.stream()
                 .filter(task -> task.hasId(taskId))
-                .map(task -> task.canBeDeleted())
+                .map(TeamTask::canBeDeleted)
                 .findFirst()
                 .orElse(true);
         if(!canBeDeleted){
@@ -93,7 +93,7 @@ public class Team implements Persistable<UUID> {
     public Optional<ProjectTaskId> getOriginalTaskId(TeamTaskId taskId){
         return tasks.stream()
                 .filter(task -> task.hasId(taskId))
-                .map(task -> task.getOriginalTaskId())
+                .map(TeamTask::getOriginalTaskId)
                 .findFirst();
     }
 
@@ -105,7 +105,7 @@ public class Team implements Persistable<UUID> {
 
     public Team assignTask(TeamTaskId taskId, TeamMemberId memberId) {
         verifyContainsTask(taskId);
-        if(!members.stream().anyMatch(member -> member.hasId(memberId))){
+        if(members.stream().noneMatch(member -> member.hasId(memberId))){
             throw new UnknownTeamMemberIdException(memberId);
         }
         var newTasks = tasks.stream()

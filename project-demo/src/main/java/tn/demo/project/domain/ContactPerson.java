@@ -2,7 +2,6 @@ package tn.demo.project.domain;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.PersistenceCreator;
-import org.springframework.data.relational.core.mapping.Column;
 import org.springframework.data.relational.core.mapping.Table;
 
 import java.util.Objects;
@@ -11,11 +10,11 @@ import java.util.UUID;
 @Table("contact_persons")
 class ContactPerson {
     @Id
-    private UUID id;
+    private final  UUID id;
 
-    private String name;
+    private final String name;
 
-    private String email;
+    private final String email;
 
     @PersistenceCreator
     private ContactPerson(UUID id, String name, String email){

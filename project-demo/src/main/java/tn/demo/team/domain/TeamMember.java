@@ -10,11 +10,11 @@ import java.util.UUID;
 @Table("team_members")
 class TeamMember {
     @Id
-    private UUID id;
+    private final  UUID id;
 
-    private String name;
+    private final String name;
 
-    private String profession;
+    private final String profession;
 
     @PersistenceCreator
     private TeamMember(UUID id, String name, String profession){

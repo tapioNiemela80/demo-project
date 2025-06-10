@@ -13,17 +13,17 @@ import java.util.UUID;
 @Table("team_tasks")
 class TeamTask {
     @Id
-    private UUID id;
-    private UUID projectTaskId;
-    private String name;
-    private String description;
-    private TeamTaskStatus status;
-    private UUID assigneeId;
+    private final UUID id;
+    private final UUID projectTaskId;
+    private final String name;
+    private final String description;
+    private final TeamTaskStatus status;
+    private final UUID assigneeId;
     @Column("actual_time_spent_hours")
-    private Integer actualTimeSpentHours;
+    private final Integer actualTimeSpentHours;
 
     @Column("actual_time_spent_minutes")
-    private Integer actualTimeSpentMinutes;
+    private final Integer actualTimeSpentMinutes;
 
     @PersistenceCreator
     private TeamTask(UUID id, UUID projectTaskId, String name, String description, TeamTaskStatus status, UUID assigneeId, Integer actualTimeSpentHours, Integer actualTimeSpentMinutes){

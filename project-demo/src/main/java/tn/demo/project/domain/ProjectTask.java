@@ -12,25 +12,25 @@ import java.util.UUID;
 @Table("project_tasks")
 class ProjectTask {
     @Id
-    private UUID id;
+    private final UUID id;
 
-    private String title;
+    private final String title;
 
-    private String description;
+    private final String description;
 
     @Column("estimated_time_hours")
-    private int estimatedTimeHours;
+    private final int estimatedTimeHours;
 
     @Column("estimated_time_minutes")
-    private int estimatedTimeMinutes;
+    private final int estimatedTimeMinutes;
 
-    private TaskStatus taskStatus;
+    private final TaskStatus taskStatus;
 
     @Column("actual_time_spent_hours")
-    private Integer actualTimeSpentHours;
+    private final Integer actualTimeSpentHours;
 
     @Column("actual_time_spent_minutes")
-    private Integer actualTimeSpentMinutes;
+    private final Integer actualTimeSpentMinutes;
 
     @PersistenceCreator
     private ProjectTask(UUID id, String title, String description, int estimatedTimeHours, int estimatedTimeMinutes, TaskStatus taskStatus, Integer actualTimeSpentHours, Integer actualTimeSpentMinutes){
