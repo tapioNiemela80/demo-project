@@ -6,18 +6,23 @@ import tn.demo.project.domain.ProjectTaskId;
 import tn.demo.team.domain.TeamId;
 import tn.demo.team.domain.TeamMemberId;
 import tn.demo.team.domain.TeamTaskId;
+import tn.demo.team.service.TeamReadService;
 import tn.demo.team.service.TeamService;
 
+import java.util.List;
 import java.util.UUID;
 
 @RestController
 @RequestMapping("/teams")
 public class TeamController {
     private final TeamService teamService;
+    private final TeamReadService teamReadService;
 
-    public TeamController(TeamService teamService) {
+    public TeamController(TeamService teamService, TeamReadService teamReadService) {
         this.teamService = teamService;
+        this.teamReadService = teamReadService;
     }
+
     @PostMapping
     public ResponseEntity<UUID> create(@RequestBody TeamInput teamInput) {
         UUID teamId = teamService.createNew(teamInput.name()).value();
@@ -61,6 +66,18 @@ public class TeamController {
     public ResponseEntity<Void> removeTask(@PathVariable UUID teamId, @PathVariable UUID taskId) {
         teamService.removeTask(new TeamId(teamId), new TeamTaskId(taskId));
         return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping
+    public ResponseEntity<List<TeamsViewDto>> findAll() {
+        return ResponseEntity.ok(teamReadService.findAll());
+    }
+
+    @GetMapping("/{teamId}")
+    public ResponseEntity<TeamViewDto> findById(@PathVariable UUID teamId) {
+        return teamReadService.findById(teamId)
+                .map(ResponseEntity::ok)
+                .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
 }

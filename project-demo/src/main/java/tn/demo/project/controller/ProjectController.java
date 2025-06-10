@@ -31,7 +31,9 @@ public class ProjectController {
 
     @GetMapping("/{id}")
     public ResponseEntity<ProjectViewDto> getOne(@PathVariable UUID id) {
-        return ResponseEntity.ok(projectReadService.findById(id));
+        return projectReadService.findById(id)
+                .map(ResponseEntity::ok)
+                .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     @GetMapping
