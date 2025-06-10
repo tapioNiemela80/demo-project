@@ -9,6 +9,7 @@ import org.springframework.data.relational.core.mapping.Column;
 import org.springframework.data.relational.core.mapping.MappedCollection;
 import org.springframework.data.relational.core.mapping.Table;
 import tn.demo.common.domain.ActualSpentTime;
+import tn.demo.common.domain.AggregateRoot;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -16,6 +17,7 @@ import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
+@AggregateRoot
 @Table("projects")
 public class Project implements Persistable<UUID> {
     @Id

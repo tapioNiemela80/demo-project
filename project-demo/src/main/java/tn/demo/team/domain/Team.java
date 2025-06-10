@@ -8,12 +8,14 @@ import org.springframework.data.domain.Persistable;
 import org.springframework.data.relational.core.mapping.MappedCollection;
 import org.springframework.data.relational.core.mapping.Table;
 import tn.demo.common.domain.ActualSpentTime;
+import tn.demo.common.domain.AggregateRoot;
 import tn.demo.project.domain.ProjectTaskId;
 
 import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
+@AggregateRoot
 @Table("teams")
 public class Team implements Persistable<UUID> {
     @Id
