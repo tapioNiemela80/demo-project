@@ -6,7 +6,10 @@ import tn.demo.project.controller.ProjectViewDto;
 import tn.demo.project.controller.ProjectsViewDto;
 import tn.demo.project.controller.TaskViewDto;
 import tn.demo.project.controller.TimeEstimation;
+import tn.demo.team.controller.ActualSpentTime;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -38,11 +41,13 @@ public class JdbcProjectViewDtoRepository implements ProjectViewDtoRepository {
         if (projects.isEmpty()) return Optional.empty();
         ProjectViewDtoBuilder builder = projects.get(0);
 
-        String sqlTasks = "SELECT id, title, description, estimated_time_hours, estimated_time_minutes, task_status FROM project_tasks WHERE project_id = :id";
+        String sqlTasks = "SELECT id, title, description, estimated_time_hours, estimated_time_minutes, task_status, actual_time_spent_hours, actual_time_spent_minutes" +
+                " FROM project_tasks WHERE project_id = :id";
         List<TaskViewDto> taskViewDtos = jdbc.query(sqlTasks, params, (rs, rowNum) -> {
             TaskViewDto t = new TaskViewDto(UUID.fromString(rs.getString("id")), rs.getString("title"), rs.getString("description"),
                     rs.getString("task_status").equals("COMPLETE") ? true : false,
-                    new TimeEstimation(rs.getInt("estimated_time_hours"), rs.getInt("estimated_time_minutes")));
+                    new TimeEstimation(rs.getInt("estimated_time_hours"), rs.getInt("estimated_time_minutes")),
+                    actualSpentTime(rs));
             return t;
         });
 
@@ -55,6 +60,20 @@ public class JdbcProjectViewDtoRepository implements ProjectViewDtoRepository {
 
         builder.contactPersonEmail = emails.get(0);
         return Optional.of(builder.build());
+    }
+
+    private ActualSpentTime actualSpentTime(ResultSet resultSet){
+        try {
+            Integer hours = resultSet.getObject("actual_time_spent_hours", Integer.class);
+            Integer minutes = resultSet.getObject("actual_time_spent_minutes", Integer.class);
+            if(hours == null){
+                return ActualSpentTime.zero();
+            }
+            return new ActualSpentTime(hours, minutes);
+        }
+        catch (SQLException sqlException){
+            throw new RuntimeException(sqlException);
+        }
     }
 
     @Override

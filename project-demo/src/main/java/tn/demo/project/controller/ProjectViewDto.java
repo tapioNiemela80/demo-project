@@ -1,5 +1,7 @@
 package tn.demo.project.controller;
 
+import tn.demo.team.controller.ActualSpentTime;
+
 import java.util.List;
 import java.util.UUID;
 
@@ -19,6 +21,12 @@ public record ProjectViewDto(UUID id,
                 .filter(TaskViewDto::isCompleted)
                 .map(TaskViewDto::timeEstimation)
                 .reduce(TimeEstimation.zeroEstimation(), TimeEstimation::add);
+    }
+
+    public ActualSpentTime getActualTimeSpent(){
+        return tasks.stream()
+                .map(TaskViewDto::actualSpentTime)
+                .reduce(ActualSpentTime.zero(), ActualSpentTime::add);
     }
 
 }
