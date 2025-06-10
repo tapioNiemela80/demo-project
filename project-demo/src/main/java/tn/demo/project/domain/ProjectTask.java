@@ -4,6 +4,7 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.PersistenceCreator;
 import org.springframework.data.relational.core.mapping.Column;
 import org.springframework.data.relational.core.mapping.Table;
+import tn.demo.common.domain.ActualSpentTime;
 
 import java.util.Objects;
 import java.util.UUID;
@@ -25,22 +26,30 @@ class ProjectTask {
 
     private TaskStatus taskStatus;
 
+    @Column("actual_time_spent_hours")
+    private Integer actualTimeSpentHours;
+
+    @Column("actual_time_spent_minutes")
+    private Integer actualTimeSpentMinutes;
+
     @PersistenceCreator
-    private ProjectTask(UUID id, String title, String description, int estimatedTimeHours, int estimatedTimeMinutes, TaskStatus taskStatus){
+    private ProjectTask(UUID id, String title, String description, int estimatedTimeHours, int estimatedTimeMinutes, TaskStatus taskStatus, Integer actualTimeSpentHours, Integer actualTimeSpentMinutes){
         this.id = id;
         this.title = title;
         this.description = description;
         this.estimatedTimeHours = estimatedTimeHours;
         this.estimatedTimeMinutes = estimatedTimeMinutes;
         this.taskStatus = taskStatus;
+        this.actualTimeSpentHours = actualTimeSpentHours;
+        this.actualTimeSpentMinutes = actualTimeSpentMinutes;
     }
 
     static ProjectTask createNew(ProjectTaskId taskId, String title, String description, TimeEstimation estimation){
-        return new ProjectTask(taskId.value(), title, description, estimation.getHours(), estimation.getMinutes(), TaskStatus.INCOMPLETE);
+        return new ProjectTask(taskId.value(), title, description, estimation.getHours(), estimation.getMinutes(), TaskStatus.INCOMPLETE, null, null);
     }
 
-    ProjectTask complete(){
-        return new ProjectTask(id, title, description, estimatedTimeHours, estimatedTimeMinutes, TaskStatus.COMPLETE);
+    ProjectTask complete(ActualSpentTime actualSpentTime){
+        return new ProjectTask(id, title, description, estimatedTimeHours, estimatedTimeMinutes, TaskStatus.COMPLETE, actualSpentTime.getHours(), actualSpentTime.getMinutes());
     }
 
     boolean hasId(ProjectTaskId expected){
@@ -57,10 +66,6 @@ class ProjectTask {
 
     public boolean isCompleted() {
         return taskStatus == TaskStatus.COMPLETE;
-    }
-
-    public boolean isIncomplete() {
-        return !isCompleted();
     }
 
     @Override

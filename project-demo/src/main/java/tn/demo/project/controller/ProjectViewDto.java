@@ -12,11 +12,7 @@ public record ProjectViewDto(UUID id,
                              List<TaskViewDto> tasks) {
 
     public TimeEstimation getRemainingEstimation(){
-        if(tasks.isEmpty()){
-            return initialEstimation;
-        }
-        TimeEstimation completedEstimation = getCompletedEstimation();
-        return initialEstimation.subtract(completedEstimation);
+        return initialEstimation.subtract(getCompletedEstimation());
     }
     public TimeEstimation getCompletedEstimation(){
         return tasks.stream()

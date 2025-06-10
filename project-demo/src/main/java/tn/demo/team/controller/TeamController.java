@@ -53,8 +53,8 @@ public class TeamController {
     }
 
     @PostMapping("/{teamId}/tasks/{taskId}/complete")
-    public ResponseEntity<Void> markTaskCompleted(@PathVariable UUID teamId, @PathVariable UUID taskId) {
-        teamService.completeTask(new TeamId(teamId), new TeamTaskId(taskId));
+    public ResponseEntity<Void> markTaskCompleted(@PathVariable UUID teamId, @PathVariable UUID taskId, @RequestBody ActualSpentTime actualSpentTime) {
+        teamService.completeTask(new TeamId(teamId), new TeamTaskId(taskId), actualSpentTime);
         return ResponseEntity.noContent().build();
     }
     @DeleteMapping("/{teamId}/tasks/{taskId}")

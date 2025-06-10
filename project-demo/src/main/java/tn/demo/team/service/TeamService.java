@@ -8,6 +8,7 @@ import tn.demo.project.domain.ProjectTaskId;
 import tn.demo.project.domain.ProjectTaskSnapshot;
 import tn.demo.project.domain.UnknownProjectTaskIdException;
 import tn.demo.project.repository.ProjectRepository;
+import tn.demo.team.controller.ActualSpentTime;
 import tn.demo.team.domain.*;
 import tn.demo.team.events.TeamTaskCompletedEvent;
 import tn.demo.team.repository.TeamRepository;
@@ -97,17 +98,22 @@ public class TeamService {
     }
 
     @Transactional
-    public void completeTask(TeamId teamId, TeamTaskId taskID){
+    public void completeTask(TeamId teamId, TeamTaskId taskID, ActualSpentTime actualSpentTime){
+        var timeSpent = toDomain(actualSpentTime);
         teams.findById(teamId.value())
-                .map(team -> team.markTaskCompleted(taskID))
+                .map(team -> team.markTaskCompleted(taskID, timeSpent))
                 .map(team -> teams.save(team))
-                .map(team -> publishTaskCompletedEvent(taskID, team))
+                .map(team -> publishTaskCompletedEvent(taskID, team, timeSpent))
                 .orElseThrow(() -> new UnknownTeamIdException(teamId));
     }
 
-    private Team publishTaskCompletedEvent(TeamTaskId taskID, Team team) {
+    private tn.demo.common.domain.ActualSpentTime toDomain(ActualSpentTime actualSpentTime){
+        return new tn.demo.common.domain.ActualSpentTime(actualSpentTime.hours(), actualSpentTime.minutes());
+    }
+
+    private Team publishTaskCompletedEvent(TeamTaskId taskID, Team team, tn.demo.common.domain.ActualSpentTime actualSpentTime) {
         team.getOriginalTaskId(taskID)
-                .ifPresent(projectTaskId -> applicationEventPublisher.publishEvent(new TeamTaskCompletedEvent(taskID, projectTaskId)));
+                .ifPresent(projectTaskId -> applicationEventPublisher.publishEvent(new TeamTaskCompletedEvent(taskID, projectTaskId, actualSpentTime)));
         return team;
     }
 

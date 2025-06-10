@@ -7,6 +7,7 @@ import org.springframework.data.annotation.Version;
 import org.springframework.data.domain.Persistable;
 import org.springframework.data.relational.core.mapping.MappedCollection;
 import org.springframework.data.relational.core.mapping.Table;
+import tn.demo.common.domain.ActualSpentTime;
 import tn.demo.project.domain.ProjectTaskId;
 
 import java.util.*;
@@ -121,10 +122,10 @@ public class Team implements Persistable<UUID> {
         return new Team(id, name, version, false, members, newTasks);
     }
 
-    public Team markTaskCompleted(TeamTaskId taskId) {
+    public Team markTaskCompleted(TeamTaskId taskId, ActualSpentTime actualSpentTime) {
         verifyContainsTask(taskId);
         var newTasks = tasks.stream()
-                .map(markCompleted(taskId))
+                .map(markCompleted(taskId, actualSpentTime))
                 .collect(Collectors.toSet());
         return new Team(id, name, version, false, members, newTasks);
     }
@@ -154,19 +155,10 @@ public class Team implements Persistable<UUID> {
         };
     }
 
-    private Function<TeamTask, TeamTask> hof(TeamTaskId taskId, Function<TeamTask, TeamTask> mapper) {
+    private Function<TeamTask, TeamTask> markCompleted(TeamTaskId taskId, ActualSpentTime actualSpentTime) {
         return teamTask -> {
             if(teamTask.hasId(taskId)){
-                return mapper.apply(teamTask);
-            }
-            return teamTask;
-        };
-    }
-
-    private Function<TeamTask, TeamTask> markCompleted(TeamTaskId taskId) {
-        return teamTask -> {
-            if(teamTask.hasId(taskId)){
-                return teamTask.complete();
+                return teamTask.complete(actualSpentTime);
             }
             return teamTask;
         };

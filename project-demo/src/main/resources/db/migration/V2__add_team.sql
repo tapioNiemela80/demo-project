@@ -18,5 +18,7 @@ CREATE TABLE project_demo.team_tasks (
     name TEXT NOT NULL,
     description TEXT NOT NULL,
     status TEXT NOT NULL,
-    assignee_id UUID
+    assignee_id UUID,
+    actual_time_spent_hours INTEGER,
+    actual_time_spent_minutes INTEGER
 );

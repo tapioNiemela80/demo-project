@@ -2,7 +2,9 @@ package tn.demo.team.domain;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.PersistenceCreator;
+import org.springframework.data.relational.core.mapping.Column;
 import org.springframework.data.relational.core.mapping.Table;
+import tn.demo.common.domain.ActualSpentTime;
 import tn.demo.project.domain.ProjectTaskId;
 
 import java.util.Objects;
@@ -17,19 +19,26 @@ class TeamTask {
     private String description;
     private TeamTaskStatus status;
     private UUID assigneeId;
+    @Column("actual_time_spent_hours")
+    private Integer actualTimeSpentHours;
+
+    @Column("actual_time_spent_minutes")
+    private Integer actualTimeSpentMinutes;
 
     @PersistenceCreator
-    private TeamTask(UUID id, UUID projectTaskId, String name, String description, TeamTaskStatus status, UUID assigneeId){
+    private TeamTask(UUID id, UUID projectTaskId, String name, String description, TeamTaskStatus status, UUID assigneeId, Integer actualTimeSpentHours, Integer actualTimeSpentMinutes){
         this.id = id;
         this.projectTaskId = projectTaskId;
         this.name = name;
         this.description = description;
         this.status = status;
         this.assigneeId = assigneeId;
+        this.actualTimeSpentHours = actualTimeSpentHours;
+        this.actualTimeSpentMinutes = actualTimeSpentMinutes;
     }
 
     static TeamTask createNew(TeamTaskId id, ProjectTaskId projectTaskId, String name, String description){
-        return new TeamTask(id.value(), projectTaskId.value(), name, description, TeamTaskStatus.NOT_ASSIGNED, null);
+        return new TeamTask(id.value(), projectTaskId.value(), name, description, TeamTaskStatus.NOT_ASSIGNED, null, null, null);
     }
 
     boolean canBeDeleted(){
@@ -40,28 +49,28 @@ class TeamTask {
         if (this.status != TeamTaskStatus.NOT_ASSIGNED) {
             throw new TaskTransitionNotAllowedException("Task already assigned or in progress.");
         }
-        return new TeamTask(id, projectTaskId, name, description, TeamTaskStatus.ASSIGNED, assigneeId.value());
+        return new TeamTask(id, projectTaskId, name, description, TeamTaskStatus.ASSIGNED, assigneeId.value(), actualTimeSpentHours, actualTimeSpentMinutes);
     }
 
     TeamTask markInProgress(){
         if (this.status != TeamTaskStatus.ASSIGNED) {
             throw new TaskTransitionNotAllowedException("Task needs to be assigned before it can be put to in progress.");
         }
-        return new TeamTask(id, projectTaskId, name, description, TeamTaskStatus.IN_PROGRESS, assigneeId);
+        return new TeamTask(id, projectTaskId, name, description, TeamTaskStatus.IN_PROGRESS, assigneeId, actualTimeSpentHours, actualTimeSpentMinutes);
     }
 
-    TeamTask complete() {
+    TeamTask complete(ActualSpentTime actualTimeSpent) {
         if (this.status != TeamTaskStatus.IN_PROGRESS) {
             throw new TaskTransitionNotAllowedException("task not in progress");
         }
-        return new TeamTask(id, projectTaskId, name, description, TeamTaskStatus.COMPLETED, assigneeId);
+        return new TeamTask(id, projectTaskId, name, description, TeamTaskStatus.COMPLETED, assigneeId, actualTimeSpent.getHours(), actualTimeSpent.getMinutes());
     }
 
     TeamTask unassign() {
         if(this.status != TeamTaskStatus.ASSIGNED){
             throw new TaskTransitionNotAllowedException("Task is not assigned");
         }
-        return new TeamTask(id, projectTaskId, name, description, TeamTaskStatus.NOT_ASSIGNED, null);
+        return new TeamTask(id, projectTaskId, name, description, TeamTaskStatus.NOT_ASSIGNED, null, actualTimeSpentHours, actualTimeSpentMinutes);
     }
 
     boolean hasId(TeamTaskId expected) {

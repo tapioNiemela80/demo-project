@@ -19,6 +19,8 @@ CREATE TABLE project_demo.project_tasks (
     estimated_time_hours INTEGER NOT NULL,
     estimated_time_minutes INTEGER NOT NULL,
     task_status TEXT NOT NULL,
+    actual_time_spent_hours INTEGER,
+    actual_time_spent_minutes INTEGER,
     project_id UUID REFERENCES project_demo.projects(id) ON DELETE CASCADE
 );
 

@@ -8,6 +8,7 @@ import org.springframework.data.domain.Persistable;
 import org.springframework.data.relational.core.mapping.Column;
 import org.springframework.data.relational.core.mapping.MappedCollection;
 import org.springframework.data.relational.core.mapping.Table;
+import tn.demo.common.domain.ActualSpentTime;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -118,11 +119,11 @@ public class Project implements Persistable<UUID> {
         return isNew;
     }
 
-    public Project completeTask(ProjectTaskId projectTaskId) {
+    public Project completeTask(ProjectTaskId projectTaskId, ActualSpentTime actualSpentTime) {
         verifyContainsTask(projectTaskId);
 
         var processedTasks = tasks.stream()
-                .map(processTask(projectTaskId))
+                .map(processTask(projectTaskId, actualSpentTime))
                 .collect(Collectors.toSet());
         var newStatus = areAllTasksCompleted(processedTasks)
                 ? ProjectStatus.COMPLETED
@@ -146,10 +147,10 @@ public class Project implements Persistable<UUID> {
                 .allMatch(ProjectTask::isCompleted);
     }
 
-    private Function<ProjectTask, ProjectTask> processTask(ProjectTaskId projectTaskId){
+    private Function<ProjectTask, ProjectTask> processTask(ProjectTaskId projectTaskId, ActualSpentTime actualSpentTime){
         return task -> {
             if(task.hasId(projectTaskId)){
-                return task.complete();
+                return task.complete(actualSpentTime);
             }
             return task;
         };

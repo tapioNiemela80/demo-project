@@ -1,6 +1,7 @@
 package tn.demo.project.domain;
 
 import org.junit.jupiter.api.Test;
+import tn.demo.common.domain.ActualSpentTime;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -52,7 +53,7 @@ class ProjectTest {
         Project project = Project.createNew(id, "test project", "testing", now, endDate, TimeEstimation.fromMinutes(61), contactPersonId, "name", "email");
         Project withTask = project.addTask(taskId, "task name", "some description", TimeEstimation.fromMinutes(60));
         Project withOtherTask = withTask.addTask(taskId2, "task name", "some desc", TimeEstimation.fromMinutes(1));
-        Project withCompletedTask = withOtherTask.completeTask(taskId);
+        Project withCompletedTask = withOtherTask.completeTask(taskId, ActualSpentTime.fromMinutes(50));
         assertFalse(withCompletedTask.isCompleted());
     }
 
@@ -65,7 +66,7 @@ class ProjectTest {
         ContactPersonId contactPersonId = new ContactPersonId(UUID.randomUUID());
         Project project = Project.createNew(id, "test project", "testing", now, endDate, TimeEstimation.fromMinutes(61), contactPersonId, "name", "email");
         Project withTask = project.addTask(taskId, "task name", "some description", TimeEstimation.fromMinutes(60));
-        Project withCompletedTasks = withTask.completeTask(taskId);
+        Project withCompletedTasks = withTask.completeTask(taskId, ActualSpentTime.fromMinutes(50));
         assertTrue(withCompletedTasks.isCompleted());
     }
 
@@ -79,7 +80,7 @@ class ProjectTest {
         ContactPersonId contactPersonId = new ContactPersonId(UUID.randomUUID());
         Project project = Project.createNew(id, "test project", "testing", now, endDate, TimeEstimation.fromMinutes(61), contactPersonId, "name", "email");
         Project withTask = project.addTask(taskId, "task name", "some description", TimeEstimation.fromMinutes(60));
-        Project withCompletedTasks = withTask.completeTask(taskId);
+        Project withCompletedTasks = withTask.completeTask(taskId, ActualSpentTime.fromMinutes(50));
         assertTrue(withCompletedTasks.isCompleted());
         assertThrows(ProjectAlreadyCompletedException.class, () -> withCompletedTasks.addTask(taskId2, "task", "desc", TimeEstimation.fromMinutes(1)));
     }
