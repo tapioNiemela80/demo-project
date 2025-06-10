@@ -34,9 +34,9 @@ public class TeamController {
         return ResponseEntity.ok(teamService.addMember(new TeamId(teamId), memberInput.name(), memberInput.profession()).value());
     }
 
-    @PostMapping("/{teamId}/tasks/{taskId}")
-    public ResponseEntity<UUID> addTask(@PathVariable UUID teamId, @PathVariable UUID taskId) {
-        return ResponseEntity.ok(teamService.addTask(new TeamId(teamId), new ProjectTaskId(taskId)).value());
+    @PostMapping("/{teamId}/tasks/by-project-id/{projectTaskId}")
+    public ResponseEntity<UUID> addTask(@PathVariable UUID teamId, @PathVariable UUID projectTaskId) {
+        return ResponseEntity.ok(teamService.addTask(new TeamId(teamId), new ProjectTaskId(projectTaskId)).value());
     }
 
     @PatchMapping("/{teamId}/tasks/{taskId}/assignee")
