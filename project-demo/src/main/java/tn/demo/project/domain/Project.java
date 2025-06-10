@@ -89,10 +89,6 @@ public class Project implements Persistable<UUID> {
         return id;
     }
 
-    public boolean hasId(ProjectId expected){
-        return id.equals(expected.value());
-    }
-
     public Project addTask(ProjectTaskId taskId, String taskName, String description, TimeEstimation estimation){
         if(isCompleted()){
             throw new ProjectAlreadyCompletedException(id);
@@ -102,7 +98,7 @@ public class Project implements Persistable<UUID> {
         if (newEstimation.exceedsOther(getInitialEstimation())){
             throw new ProjectTimeEstimationWouldBeExceededException("Cannot add any more tasks, project estimation would be exceeded");
         }
-        Set<ProjectTask> existingTasks = tasks;
+        Set<ProjectTask> existingTasks = new HashSet<>(tasks);
         existingTasks.add(ProjectTask.createNew(taskId, taskName, description, estimation));
         return new Project(id, name, this.description, createdAt, plannedEndDate, status, version, false, existingTasks,
                 getInitialEstimation(), contactPerson);

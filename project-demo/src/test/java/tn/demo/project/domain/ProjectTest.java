@@ -22,6 +22,7 @@ class ProjectTest {
         verifyNoTaskFound(project, taskId);
 
         Project withTask = project.addTask(taskId, "task name", "some description", TimeEstimation.fromMinutes(60));
+        verifyNoTaskFound(project, taskId);
         Optional<ProjectTaskSnapshot> task = withTask.getTask(taskId);
         assertTrue(task.isPresent());
 
