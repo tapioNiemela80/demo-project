@@ -5,6 +5,8 @@ import tn.demo.common.domain.ActualSpentTime;
 import tn.demo.project.domain.ProjectTaskId;
 import tn.demo.team.domain.TeamTaskId;
 
+import java.util.Objects;
+
 public class TeamTaskCompletedEvent extends ApplicationEvent {
     private final TeamTaskId taskID;
     private final ProjectTaskId projectTaskId;
@@ -21,5 +23,18 @@ public class TeamTaskCompletedEvent extends ApplicationEvent {
 
     public ActualSpentTime getActualSpentTime() {
         return actualSpentTime;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        TeamTaskCompletedEvent that = (TeamTaskCompletedEvent) o;
+        return taskID.equals(that.taskID) && projectTaskId.equals(that.projectTaskId) && actualSpentTime.equals(that.actualSpentTime);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(taskID, projectTaskId, actualSpentTime);
     }
 }

@@ -21,7 +21,6 @@ class TeamTask {
     private final UUID assigneeId;
     @Column("actual_time_spent_hours")
     private final Integer actualTimeSpentHours;
-
     @Column("actual_time_spent_minutes")
     private final Integer actualTimeSpentMinutes;
 
@@ -79,6 +78,23 @@ class TeamTask {
 
     ProjectTaskId getOriginalTaskId() {
         return new ProjectTaskId(projectTaskId);
+    }
+
+    boolean hasDetails(TeamTaskId taskId, ProjectTaskId projectTaskId, String name, String description, UUID assignee, ActualSpentTime actualSpentTime, TeamTaskStatus expectedStatus) {
+        return hasId(taskId)
+                && Objects.equals(projectTaskId.value(), this.projectTaskId)
+                && Objects.equals(name, this.name)
+                && Objects.equals(description, this.description)
+                && Objects.equals(assignee, this.assigneeId)
+                && Objects.equals(actualSpentTime, this.getActualSpentTime())
+                && expectedStatus == this.status;
+    }
+
+    private ActualSpentTime getActualSpentTime() {
+        if(status == TeamTaskStatus.COMPLETED){
+            return new ActualSpentTime(actualTimeSpentHours, actualTimeSpentMinutes);
+        }
+        return null;
     }
 
     @Override

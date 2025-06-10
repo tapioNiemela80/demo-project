@@ -10,7 +10,7 @@ import java.util.UUID;
 @Table("team_members")
 class TeamMember {
     @Id
-    private final  UUID id;
+    private final UUID id;
 
     private final String name;
 
@@ -29,6 +29,10 @@ class TeamMember {
 
     boolean hasId(TeamMemberId expected) {
         return id.equals(expected.value());
+    }
+
+    boolean hasDetails(TeamMemberId memberId, String name, String profession) {
+        return hasId(memberId) && Objects.equals(name, this.name) && Objects.equals(profession, this.profession);
     }
 
     @Override

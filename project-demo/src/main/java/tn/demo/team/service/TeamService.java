@@ -19,18 +19,20 @@ public class TeamService {
     private final ProjectRepository projects;
     private final ApplicationEventPublisher applicationEventPublisher;
     private final IDService IDService;
+    private final TeamFactory teamFactory;
 
-    public TeamService(TeamRepository teams, ProjectRepository projects, ApplicationEventPublisher applicationEventPublisher, IDService IDService) {
+    public TeamService(TeamRepository teams, ProjectRepository projects, ApplicationEventPublisher applicationEventPublisher, tn.demo.common.IDService IDService, TeamFactory teamFactory) {
         this.teams = teams;
         this.projects = projects;
         this.applicationEventPublisher = applicationEventPublisher;
         this.IDService = IDService;
+        this.teamFactory = teamFactory;
     }
 
     @Transactional
     public TeamId createNew(String name){
         TeamId teamId = IDService.newTeamId();
-        teams.save(Team.createNew(teamId, name));
+        teams.save(teamFactory.createNew(teamId, name));
         return teamId;
     }
 
@@ -39,7 +41,7 @@ public class TeamService {
         TeamMemberId memberId = IDService.newTeamMemberId();
         return teams.findById(teamId.value())
                 .map(team -> team.addMember(memberId, name, profession))
-                .map(team -> teams.save(team))
+                .map(teams::save)
                 .map(ignored -> memberId)
                 .orElseThrow(() -> new UnknownTeamIdException(teamId));
     }
@@ -61,15 +63,13 @@ public class TeamService {
     }
 
     private boolean checkIfAlreadyBelongsToSomeTeam(ProjectTaskId originalTaskId) {
-        return teams.findByOriginalProjectTaskId(originalTaskId.value())
-                .map(team -> true)
-                .orElse(false);
+        return teams.findByOriginalProjectTaskId(originalTaskId.value()).isPresent();
     }
     @Transactional
     public void assignTask(TeamId teamId, TeamTaskId taskID, TeamMemberId toMemberId){
         teams.findById(teamId.value())
                 .map(team -> team.assignTask(taskID, toMemberId))
-                .map(team -> teams.save(team))
+                .map(teams::save)
                 .orElseThrow(() -> new UnknownTeamIdException(teamId));
     }
 
@@ -77,7 +77,7 @@ public class TeamService {
     public void markTaskInProgress(TeamId teamId, TeamTaskId taskID){
         teams.findById(teamId.value())
                 .map(team -> team.markTaskInProgress(taskID))
-                .map(team -> teams.save(team))
+                .map(teams::save)
                 .orElseThrow(() -> new UnknownTeamIdException(teamId));
     }
 
@@ -85,7 +85,7 @@ public class TeamService {
     public void unassignTask(TeamId teamId, TeamTaskId taskID){
         teams.findById(teamId.value())
                 .map(team -> team.markTaskUnassigned(taskID))
-                .map(team -> teams.save(team))
+                .map(teams::save)
                 .orElseThrow(() -> new UnknownTeamIdException(teamId));
     }
 
@@ -93,7 +93,7 @@ public class TeamService {
     public void removeTask(TeamId teamId, TeamTaskId taskID){
         teams.findById(teamId.value())
                 .map(team -> team.removeTask(taskID))
-                .map(team -> teams.save(team))
+                .map(teams::save)
                 .orElseThrow(() -> new UnknownTeamIdException(teamId));
     }
 
@@ -102,7 +102,7 @@ public class TeamService {
         var timeSpent = toDomain(actualSpentTime);
         teams.findById(teamId.value())
                 .map(team -> team.markTaskCompleted(taskID, timeSpent))
-                .map(team -> teams.save(team))
+                .map(teams::save)
                 .map(team -> publishTaskCompletedEvent(taskID, team, timeSpent))
                 .orElseThrow(() -> new UnknownTeamIdException(teamId));
     }

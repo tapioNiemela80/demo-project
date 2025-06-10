@@ -18,14 +18,14 @@ import java.util.stream.Collectors;
 public class Team implements Persistable<UUID> {
     @Id
     private final UUID id;
-    private  final String name;
+    private final String name;
     @Version
-    private  final int version;
+    private final int version;
     @MappedCollection(idColumn = "team_id", keyColumn = "id")
-    private  final Set<TeamMember> members;
+    private final Set<TeamMember> members;
 
     @MappedCollection(idColumn = "team_id", keyColumn = "id")
-    private  final Set<TeamTask> tasks;
+    private final Set<TeamTask> tasks;
 
     @Transient
     private final transient boolean isNew;
@@ -62,6 +62,20 @@ public class Team implements Persistable<UUID> {
         Set<TeamMember> existingMembers = members;
         existingMembers.add(TeamMember.createNew(memberId, name, profession));
         return new Team(id, this.name,  version, false, existingMembers, this.tasks);
+    }
+
+    public boolean containsMember(TeamMemberId memberId, String name, String profession){
+        return members.stream().anyMatch(member -> member.hasDetails(memberId, name, profession));
+    }
+
+    public boolean containsCompletedTask(TeamTaskId taskId, ProjectTaskId projectTaskId, String name, String description, UUID assignee, ActualSpentTime actualSpentTime){
+        return tasks.stream()
+                .anyMatch(task -> task.hasDetails(taskId, projectTaskId, name, description, assignee, actualSpentTime, TeamTaskStatus.COMPLETED));
+    }
+
+    public boolean containsUncompletedTask(TeamTaskId taskId, ProjectTaskId projectTaskId, String name, String description, UUID assignee, TeamTaskStatus expectedStatus){
+        return tasks.stream()
+                .anyMatch(task -> task.hasDetails(taskId, projectTaskId, name, description, assignee, null, expectedStatus));
     }
 
     public Team addTask(TeamTaskId taskId, ProjectTaskId projectTaskId, String name, String description){
