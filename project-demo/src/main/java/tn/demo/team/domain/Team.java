@@ -59,7 +59,7 @@ public class Team implements Persistable<UUID> {
     }
 
     public Team addMember(TeamMemberId memberId, String name, String profession){
-        Set<TeamMember> existingMembers = members;
+        Set<TeamMember> existingMembers = new HashSet<>(members);
         existingMembers.add(TeamMember.createNew(memberId, name, profession));
         return new Team(id, this.name,  version, false, existingMembers, this.tasks);
     }
@@ -79,7 +79,7 @@ public class Team implements Persistable<UUID> {
     }
 
     public Team addTask(TeamTaskId taskId, ProjectTaskId projectTaskId, String name, String description){
-        Set<TeamTask> existingTasks = tasks;
+        Set<TeamTask> existingTasks = new HashSet<>(tasks);
         existingTasks.add(TeamTask.createNew(taskId, projectTaskId, name, description));
         return new Team(id, this.name,  version, false, this.members, existingTasks);
     }
