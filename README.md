@@ -16,7 +16,7 @@ Tämä on esimerkki kevytprojektinhallintamallista, jossa tiimit ja projektit to
 
 - Java 17
 - Maven
-- PostreSQL
+- PostgreSQL
 - Docker
 - Spring Boot
 - Spring Data JDBC
@@ -31,7 +31,7 @@ POSTGRES_PASSWORD=salasana123
 
 PGDATA_VOLUME=/c/Users/demo/postgres-data
 
-#### PostreSql-kontin käynnistys
+#### PostrgeSql-kontin käynnistys
 ```docker compose up -d```
 
 ### Spring-boot 
@@ -56,7 +56,7 @@ Itse sovellus käynnistetään project-demo-kansiossa ajamalla komento ```mvn sp
 Tietyt aggregaattitapahtumat laukaisevat muita päivityksiä järjestelmässä:
 
 - `TaskAddedToProjectEvent`: syntyy, kun uusi taski lisätään projektille, käsittelijä lähettää tästä sähköpostia projektin yhteyshenkilölle. Tämä demonstroi "side-effect":in käsittelyä
-- `TeamTaskCompletedEvent`: kun tiimi merkitsee tehtävän valmiiksi, tämän eventin käsittelijä päivittää projektin vastaavan taskin valmiiksi toteutuneen työmäärän kanssa. Projekti itse huolehtii itse siitä, että projekti merkitään valmiiksi jos kaikki sen tehtävät ovat valmiita. Tämän eventin käsittely demonstroi DDD:n perusperiaatetta, että kahta aggregate roottia ei saa tallentaa yhdessä transaktiossa. Eventin käsittely on myös idempotentti. Jos sen käsittelyn aikana tapahtuu optimisisen lukituksen virhe, yritetään uudestaan. Jos toinen osapuoli on yrittänyt lisätä tehtävää, tarkistetaan onko projekti jo valmis
+- `TeamTaskCompletedEvent`: kun tiimi merkitsee tehtävän valmiiksi, tämän eventin käsittelijä päivittää projektin vastaavan taskin valmiiksi toteutuneen työmäärän kanssa. Projekti itse huolehtii itse siitä, että projekti merkitään valmiiksi jos kaikki sen tehtävät ovat valmiita. Tämän eventin käsittely demonstroi DDD:n perusperiaatetta, että kahta aggregate roottia ei saa tallentaa yhdessä transaktiossa. Eventin käsittely on myös idempotentti. Jos sen käsittelyn aikana tapahtuu optimistisen lukituksen virhe, yritetään uudestaan. Jos toinen osapuoli on yrittänyt lisätä tehtävää, tarkistetaan onko projekti jo valmis
 
 ## REST-endpointit (esimerkit)
 todo
