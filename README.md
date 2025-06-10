@@ -63,7 +63,7 @@ todo
 
 ## Rajoitteet ja huomiot
 
-- Tämä projekti demonstroi lähinnä DDD ja Spring Data JDBC-osaamista. Siinä ei ole toteutettu mm. oikeaa autentikoitumista tai minkäänlaista käyttöliittymää
+- Tämä projekti demonstroi lähinnä DDD ja Spring Data JDBC-osaamista. Siinä ei ole toteutettu mm. oikeaa autentikoitumista tai minkäänlaista käyttöliittymää. Ns. get-rajapinnat ovat myös hyvin kevyesti toteutettu ja testattu
 
 ## Kehittäjä
 
