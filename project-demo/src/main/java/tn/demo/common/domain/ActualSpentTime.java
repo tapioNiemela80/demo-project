@@ -17,6 +17,18 @@ public final class ActualSpentTime {
         this.minutes = totalMinutes % 60;
     }
 
+    public int getHours() {
+        return hours;
+    }
+
+    public int getMinutes() {
+        return minutes;
+    }
+
+    public static ActualSpentTime fromMinutes(int totalMinutes) {
+        return new ActualSpentTime(0, totalMinutes);
+    }
+
     @Override
     public String toString() {
         return String.format("%dh %02dm", hours, minutes);
