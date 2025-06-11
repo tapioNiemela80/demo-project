@@ -63,6 +63,9 @@ Tietyt aggregaattitapahtumat laukaisevat muita päivityksiä järjestelmässä:
 ### Luo projekti
 ```curl --location 'http://localhost:8080/projects' --header 'Content-Type: application/json' --data-raw '{"name":"coding project", "description":"portfolio demonstration", "estimatedEndDate": "2026-01-01", "estimation":{"hours":10,"minutes":55}, "contactPersonInput":{"name":"tapio niemelä","email":"tapio.niemela_1@yahoo.com"}}'```
 
+### Lisää taski projektille
+```curl --location 'http://localhost:8080/projects/cd8a4243-717b-4181-bb5a-83381f511920/tasks' --header 'Content-Type: application/json' --data '{"name":"java code", "description":"make java code demonstrating ddd and spring data jdbc", "estimation":{"hours":8, "minutes":0}}'```
+
 ## Rajoitteet ja huomiot
 
 - Tämä projekti demonstroi lähinnä DDD ja Spring Data JDBC-osaamista. Siinä ei ole toteutettu mm. oikeaa autentikoitumista tai minkäänlaista käyttöliittymää
