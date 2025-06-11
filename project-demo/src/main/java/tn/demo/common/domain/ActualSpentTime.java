@@ -2,6 +2,7 @@ package tn.demo.common.domain;
 
 import java.util.Objects;
 
+@ValueObject(description ="Represents actual time used on task or on tasks")
 public final class ActualSpentTime {
 
     private final int hours;
@@ -14,34 +15,6 @@ public final class ActualSpentTime {
         int totalMinutes = hours * 60 + minutes;
         this.hours = totalMinutes / 60;
         this.minutes = totalMinutes % 60;
-    }
-
-    public static ActualSpentTime zero(){
-        return new ActualSpentTime(0, 0);
-    }
-
-    public ActualSpentTime add(ActualSpentTime other) {
-        return fromMinutes(this.toTotalMinutes() + other.toTotalMinutes());
-    }
-
-    public boolean exceedsOther(ActualSpentTime other){
-        return toTotalMinutes() > other.toTotalMinutes();
-    }
-
-    public int toTotalMinutes() {
-        return hours * 60 + minutes;
-    }
-
-    public int getHours() {
-        return hours;
-    }
-
-    public int getMinutes() {
-        return minutes;
-    }
-
-    public static ActualSpentTime fromMinutes(int totalMinutes) {
-        return new ActualSpentTime(0, totalMinutes);
     }
 
     @Override

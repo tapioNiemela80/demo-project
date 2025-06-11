@@ -1,7 +1,10 @@
 package tn.demo.project.domain;
 
+import tn.demo.common.domain.ValueObject;
+
 import java.util.Objects;
 
+@ValueObject(description ="Represents time estimation on task or on tasks")
 public final class TimeEstimation {
 
     private final int hours;
