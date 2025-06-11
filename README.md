@@ -72,6 +72,15 @@ Tietyt aggregaattitapahtumat laukaisevat muita päivityksiä järjestelmässä:
 ### Lisää tiimille jäsen
 ```curl --location 'localhost:8080/teams/791031a6-922b-4ea0-93da-ae7b21a7a09b/members' --header 'Content-Type: application/json' --data '{"name":"tapio niemelä", "profession":"ddd enthuistic"}'```
 
+### Lisää (projektin) taski tiimille
+```curl --location --request POST 'localhost:8080/teams/791031a6-922b-4ea0-93da-ae7b21a7a09b/tasks/by-project-id/6e46e573-1bf4-46e9-a633-fb7447e42c16' --data ''```
+
+### Assignoi taski tiimin jäsenelle
+```curl --location --request PATCH 'localhost:8080/teams/791031a6-922b-4ea0-93da-ae7b21a7a09b/tasks/5ad12dec-34be-40a9-ab9a-0c619b6ae6ab/assignee' --header 'Content-Type: application/json' --data '{"assigneeId":"c41c9a87-688f-428d-a1d5-4134f1faeeaf"}'```
+
+### Ota taski käsittelyyn
+```curl --location --request POST 'localhost:8080/teams/791031a6-922b-4ea0-93da-ae7b21a7a09b/tasks/5ad12dec-34be-40a9-ab9a-0c619b6ae6ab/mark-in-progress' --data ''```
+
 ## Rajoitteet ja huomiot
 
 - Tämä projekti demonstroi lähinnä DDD ja Spring Data JDBC-osaamista. Siinä ei ole toteutettu mm. oikeaa autentikoitumista tai minkäänlaista käyttöliittymää
