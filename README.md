@@ -81,6 +81,15 @@ Tietyt aggregaattitapahtumat laukaisevat muita päivityksiä järjestelmässä:
 ### Ota taski käsittelyyn
 ```curl --location --request POST 'localhost:8080/teams/791031a6-922b-4ea0-93da-ae7b21a7a09b/tasks/5ad12dec-34be-40a9-ab9a-0c619b6ae6ab/mark-in-progress' --data ''```
 
+### Merkitse taski valmiiksi
+```curl --location 'localhost:8080/teams/791031a6-922b-4ea0-93da-ae7b21a7a09b/tasks/f078044f-72dc-4f70-9230-affece4758db/complete' --header 'Content-Type: application/json' --data '{"hours":2, "minutes":0}'```
+
+### Hae annettu projekti
+```curl --location 'http://localhost:8080/projects/cd8a4243-717b-4181-bb5a-83381f511920' --data ''```
+
+### Hae annettu tiimi
+```curl --location 'http://localhost:8080/teams/791031a6-922b-4ea0-93da-ae7b21a7a09b' --data ''```
+
 ## Rajoitteet ja huomiot
 
 - Tämä projekti demonstroi lähinnä DDD ja Spring Data JDBC-osaamista. Siinä ei ole toteutettu mm. oikeaa autentikoitumista tai minkäänlaista käyttöliittymää
