@@ -56,23 +56,21 @@ Itse sovellus käynnistetään project-demo-kansiossa ajamalla komento ```mvn sp
 Tietyt aggregaattitapahtumat laukaisevat muita päivityksiä järjestelmässä:
 
 - `TaskAddedToProjectEvent`: syntyy, kun uusi taski lisätään projektille, käsittelijä lähettää tästä sähköpostia projektin yhteyshenkilölle. Tämä demonstroi "side-effect":in käsittelyä
-- `TeamTaskCompletedEvent`: kun tiimi merkitsee tehtävän valmiiksi, tämän eventin käsittelijä päivittää projektin vastaavan taskin valmiiksi toteutuneen työmäärän kanssa. Projekti itse huolehtii itse siitä, että projekti merkitään valmiiksi jos kaikki sen tehtävät ovat valmiita. Tämän eventin käsittely demonstroi DDD:n perusperiaatetta, että kahta aggregate roottia ei saa tallentaa yhdessä transaktiossa. Eventin käsittely on myös idempotentti. Jos sen käsittelyn aikana tapahtuu optimistisen lukituksen virhe, yritetään uudestaan. Jos toinen osapuoli on yrittänyt lisätä tehtävää, tarkistetaan onko projekti jo valmis
+- `TeamTaskCompletedEvent`: kun tiimi merkitsee tehtävän valmiiksi, tämän eventin käsittelijä päivittää projektin vastaavan taskin valmiiksi toteutuneen työmäärän kanssa. Projekti itse huolehtii itse siitä, että projekti merkitään valmiiksi jos kaikki sen tehtävät ovat valmiita. Tämän eventin käsittely demonstroi DDD:n perusperiaatetta, että kahta aggregate roottia ei saa tallentaa yhdessä transaktiossa. Eventin käsittely on myös idempotentti. Jos sen käsittelyn aikana tapahtuu optimistisen lukituksen virhe, yritetään uudestaan. Jos puolestaan toinen osapuoli on yrittänyt lisätä tehtävää, tarkistetaan onko projekti jo valmis ja hylätään sen aiheuttama päivitys (jos projekti on jo valmis)
 
 ## REST-endpointit (esimerkit)
 todo
 
 ## Rajoitteet ja huomiot
 
-- Tämä projekti demonstroi lähinnä DDD ja Spring Data JDBC-osaamista. Siinä ei ole toteutettu mm. oikeaa autentikoitumista tai minkäänlaista käyttöliittymää. Ns. get-rajapinnat ovat myös hyvin kevyesti toteutettu ja testattu
+- Tämä projekti demonstroi lähinnä DDD ja Spring Data JDBC-osaamista. Siinä ei ole toteutettu mm. oikeaa autentikoitumista tai minkäänlaista käyttöliittymää
+- Tavoitteena on ollut pitää aggregate-malli keskittyneenä toimintoihin (write). Tietojen hakeminen(read) on toteutettu erikseen suorilla SQL-kyselyillä. Read-malli on tehty kevyesti, koska se ei ole oleellinen osa demoa
+- Yksikkötestit on tehty vain kriittisille toiminnallisuuksille
 
 ## Kehittäjä
 
-Toteuttanut Tapio Niemelä. Portfolio toimii todisteena osaamisesta:
-
-Java + Spring Boot + Spring Data JDBC
-
-Domain Driven Design (aggregaatit, säännöt, eventit)
-
-Testivetoisuus
-
-Käytännöllinen REST-rajapinta
+- Toteuttanut Tapio Niemelä. Portfolio toimii todisteena osaamisesta:
+- Java + Spring Boot + Spring Data JDBC
+- Domain Driven Design (aggregaatit, säännöt, eventit)
+- Testivetoisuus
+- Käytännöllinen REST-rajapinta
