@@ -85,6 +85,12 @@ Tietyt aggregaattitapahtumat laukaisevat muita päivityksiä järjestelmässä:
 ### Merkitse taski valmiiksi
 ```curl --location 'localhost:8080/teams/791031a6-922b-4ea0-93da-ae7b21a7a09b/tasks/f078044f-72dc-4f70-9230-affece4758db/complete' --header 'Content-Type: application/json' --data '{"hours":2, "minutes":0}'```
 
+### Unassignoi task
+```curl --location 'localhost:8080/teams/791031a6-922b-4ea0-93da-ae7b21a7a09b/tasks/a41eb504-ae94-40d7-a38f-e0cd2217e5f9/unassign' --header 'Content-Type: application/json' --data ''```
+
+### Poista annettu task tiimiltä
+```curl --location --request DELETE 'http://localhost:8080/teams/791031a6-922b-4ea0-93da-ae7b21a7a09b/tasks/a41eb504-ae94-40d7-a38f-e0cd2217e5f9'```
+
 ### Hae annettu projekti
 ```curl --location 'http://localhost:8080/projects/cd8a4243-717b-4181-bb5a-83381f511920' --data ''```
 
