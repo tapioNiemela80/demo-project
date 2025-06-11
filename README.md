@@ -42,7 +42,8 @@ Itse sovellus käynnistetään project-demo-kansiossa ajamalla komento ```mvn sp
 
 - **Project**: Omistaa alkuarvion (InitialEstimation), projektille lisätään tehtäviä. Projekti itse huolehtii tehtäviä lisättäessä, että arvioitu aika-arvio ei ylity
 - **Team**: Omistaa tiimin jäsenet ja vastaa tehtävien hallinnasta.
-- **TeamTask**: Edustaa tiimin työyksikköä ja säilyttää elinkaaren sekä mahdollisesti toteutuneen ajan (`ActualTimeSpent`).
+- **ProjectTask**: On osa projektisuunnittelua. Se määrittää mitä pitää tehdä ja kuinka paljon työtä siihen on alun perin arvioitu.
+- **TeamTask**: Edustaa sitä, miten tiimi toteuttaa projektitehtävän: kuka tekee sen, missä vaiheessa se on, ja paljonko todellista aikaa kului.
 
 ## Value Objectit
 
