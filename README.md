@@ -35,7 +35,7 @@ PGDATA_VOLUME=/c/Users/demo/postgres-data
 ```docker compose up -d```
 
 ### Spring-boot 
-Sovellus olettaa env-muuttujista löytyvän tietokannan salasanan. Sen voi Windows/cmd-promptissa asettaa esimerkiksi näin ```set POSTGRES_PASSWORD=salasana123```
+Sovellus olettaa ympäristömuuttujista löytyvän tietokannan salasanan. Sen voi Windowsin cmd-promptissa asettaa esimerkiksi näin ```set POSTGRES_PASSWORD=salasana123```
 Itse sovellus käynnistetään project-demo-kansiossa ajamalla komento ```mvn spring-boot:run```
 
 ## Domainin rakenne
