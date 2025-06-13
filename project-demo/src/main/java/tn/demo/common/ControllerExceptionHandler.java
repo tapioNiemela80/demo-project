@@ -1,4 +1,4 @@
-package tn.demo.team.controller;
+package tn.demo.common;
 
 
 import org.springframework.http.HttpStatus;
