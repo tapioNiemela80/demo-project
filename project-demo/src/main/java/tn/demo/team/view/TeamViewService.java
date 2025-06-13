@@ -1,4 +1,4 @@
-package tn.demo.team.repository;
+package tn.demo.team.view;
 
 import org.springframework.stereotype.Service;
 import tn.demo.team.controller.*;

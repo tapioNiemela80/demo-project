@@ -6,7 +6,7 @@ import tn.demo.project.domain.ProjectTaskId;
 import tn.demo.team.domain.TeamId;
 import tn.demo.team.domain.TeamMemberId;
 import tn.demo.team.domain.TeamTaskId;
-import tn.demo.team.repository.TeamViewService;
+import tn.demo.team.view.TeamViewService;
 import tn.demo.team.service.TeamService;
 
 import java.util.List;

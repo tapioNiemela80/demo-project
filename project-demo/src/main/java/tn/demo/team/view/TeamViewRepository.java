@@ -1,4 +1,4 @@
-package tn.demo.team.repository;
+package tn.demo.team.view;
 
 import org.springframework.data.jdbc.repository.query.Query;
 import org.springframework.data.repository.Repository;
@@ -6,7 +6,7 @@ import org.springframework.data.repository.Repository;
 import java.util.List;
 import java.util.UUID;
 
-public interface TeamViewRepository extends Repository<TeamViewRow, UUID> {
+interface TeamViewRepository extends Repository<TeamViewRow, UUID> {
 
     @Query("""
         SELECT

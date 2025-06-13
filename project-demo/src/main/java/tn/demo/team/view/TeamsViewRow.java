@@ -1,8 +1,8 @@
-package tn.demo.team.repository;
+package tn.demo.team.view;
 
 import java.util.UUID;
 
-public record TeamsViewRow(
+record TeamsViewRow(
         UUID teamId,
         String teamName
 ) {}
