@@ -1,7 +1,5 @@
 package tn.demo.project.view;
 
-import tn.demo.project.controller.TimeEstimation;
-
 import java.util.List;
 import java.util.UUID;
 
@@ -10,20 +8,21 @@ public record ProjectView(UUID id,
                           String description,
                           boolean isCompleted,
                           String contactPersonEmail,
-                          TimeEstimation initialEstimation,
+                          TimeEstimate initialEstimation,
                           List<TaskView> tasks) {
 
-    public TimeEstimation getRemainingEstimation(){
+    public TimeEstimate getRemainingEstimation() {
         return initialEstimation.subtract(getCompletedEstimation());
     }
-    public TimeEstimation getCompletedEstimation(){
+
+    public TimeEstimate getCompletedEstimation() {
         return tasks.stream()
                 .filter(TaskView::isCompleted)
-                .map(TaskView::timeEstimation)
-                .reduce(TimeEstimation.zeroEstimation(), TimeEstimation::add);
+                .map(TaskView::timeEstimate)
+                .reduce(TimeEstimate.zeroEstimation(), TimeEstimate::add);
     }
 
-    public ActualTimeSpent getActualTimeSpent(){
+    public ActualTimeSpent getActualTimeSpent() {
         return tasks.stream()
                 .filter(TaskView::isCompleted)
                 .map(TaskView::actualTimeSpent)

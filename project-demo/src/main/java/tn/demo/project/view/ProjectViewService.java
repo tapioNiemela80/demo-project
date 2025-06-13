@@ -1,7 +1,6 @@
 package tn.demo.project.view;
 
 import org.springframework.stereotype.Service;
-import tn.demo.project.controller.TimeEstimation;
 
 import java.util.List;
 import java.util.Optional;
@@ -37,7 +36,7 @@ public class ProjectViewService {
                 first.description(),
                 first.projectStatus().equals("COMPLETED"),
                 first.contactPersonEmail(),
-                new TimeEstimation(first.projectEstimateHours(), first.projectEstimateMinutes()),
+                new TimeEstimate(first.projectEstimateHours(), first.projectEstimateMinutes()),
                 tasks
         ));
     }
@@ -62,8 +61,8 @@ public class ProjectViewService {
         }
         return new ActualTimeSpent(row.actualHours(), row.actualMinutes());
     }
-    private TimeEstimation estimation(ProjectTaskRow row) {
-        return new TimeEstimation(row.taskEstimateHours(), row.taskEstimateMinutes());
+    private TimeEstimate estimation(ProjectTaskRow row) {
+        return new TimeEstimate(row.taskEstimateHours(), row.taskEstimateMinutes());
     }
 
 }
