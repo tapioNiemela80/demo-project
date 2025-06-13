@@ -1,4 +1,4 @@
-package tn.demo.project.repository;
+package tn.demo.project.view;
 
 import org.springframework.data.jdbc.repository.query.Query;
 import org.springframework.data.repository.Repository;

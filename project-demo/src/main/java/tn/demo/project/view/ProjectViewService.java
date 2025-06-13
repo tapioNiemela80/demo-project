@@ -1,8 +1,8 @@
-package tn.demo.project.repository;
+package tn.demo.project.view;
 
 import org.springframework.stereotype.Service;
 import tn.demo.project.controller.ProjectView;
-import tn.demo.project.controller.ProjectsViewDto;
+import tn.demo.project.controller.ProjectsView;
 import tn.demo.project.controller.TaskView;
 import tn.demo.project.controller.TimeEstimation;
 import tn.demo.team.controller.ActualSpentTime;
@@ -19,10 +19,10 @@ public class ProjectViewService {
         this.projectViewRepository = projectViewRepository;
     }
 
-    public List<ProjectsViewDto> findAll(){
+    public List<ProjectsView> findAll(){
         return projectViewRepository.findAll()
                 .stream()
-                .map(data -> new ProjectsViewDto(data.id(), data.name(), data.description()))
+                .map(data -> new ProjectsView(data.id(), data.name(), data.description()))
                 .toList();
     }
 

@@ -4,7 +4,7 @@ package tn.demo.project.controller;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import tn.demo.project.domain.ProjectId;
-import tn.demo.project.repository.ProjectViewService;
+import tn.demo.project.view.ProjectViewService;
 import tn.demo.project.service.ProjectService;
 
 import java.util.List;
@@ -37,7 +37,7 @@ public class ProjectController {
     }
 
     @GetMapping
-    public ResponseEntity<List<ProjectsViewDto>> findAll() {
+    public ResponseEntity<List<ProjectsView>> findAll() {
         return ResponseEntity.ok(projectViewService.findAll());
     }
 

@@ -1,4 +1,4 @@
-package tn.demo.project.repository;
+package tn.demo.project.view;
 
 import java.util.UUID;
 
