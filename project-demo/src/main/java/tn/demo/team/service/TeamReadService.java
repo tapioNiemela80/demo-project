@@ -21,6 +21,8 @@ public class TeamReadService {
         return teamViewDtoRepository.findAll();
     }
 
+
+
     public Optional<TeamViewDto> findById(UUID id) {
         return teamViewDtoRepository.findById(id);
     }
