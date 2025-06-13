@@ -98,6 +98,10 @@ class TeamTask {
     }
 
     boolean isAssignedTo(TeamMemberId memberId) {
+        Objects.requireNonNull(memberId);
+        if(assigneeId == null){
+            return false;
+        }
         return assigneeId.equals(memberId.value());
     }
 

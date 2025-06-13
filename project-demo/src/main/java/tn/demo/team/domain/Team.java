@@ -96,6 +96,7 @@ public class Team implements Persistable<UUID> {
     }
 
     public Team removeMember(TeamMemberId memberId){
+        Objects.requireNonNull(memberId);
         verifyContainsMember(memberId);
         verifyMemberCanBeRemoved(memberId);
         var remainingMembers = members.stream()

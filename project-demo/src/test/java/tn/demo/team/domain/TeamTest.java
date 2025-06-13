@@ -116,9 +116,12 @@ class TeamTest {
     void throwsExceptionWhenTryingToRemoveMemberWhoHasAssignedTask(){
         Team team = Team.createNew(getTeamId(), "project team");
         TeamTaskId taskId = getTaskId();
+        TeamTaskId taskId2 = getTaskId();
         TeamMemberId memberId = getMemberId();
         ProjectTaskId projectTaskId = getProjectTaskId();
+        ProjectTaskId projectTaskId2 = getProjectTaskId();
         Team afterAdd = team.addTask(taskId, projectTaskId, "test", "robot framework");
+        afterAdd = afterAdd.addTask(taskId2, projectTaskId2, "write code", "java code");
         afterAdd = afterAdd.addMember(memberId, "john doe", "tester");
         final Team teamWithAssignedTask = afterAdd.assignTask(taskId, memberId);
         assertTrue(teamWithAssignedTask.containsUncompletedTask(taskId, projectTaskId, "test", "robot framework", memberId.value(), TeamTaskStatus.ASSIGNED));
