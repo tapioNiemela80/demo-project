@@ -77,6 +77,26 @@ class TeamServiceTest {
     }
 
     @Test
+    void removesMember(){
+        TeamId teamId = getTeamId();
+        TeamMemberId memberId = getMemberId();
+        Team team = mock(Team.class);
+        when(teams.findById(teamId.value())).thenReturn(Optional.of(team));
+        when(team.removeMember(memberId)).thenReturn(team);
+        when(teams.save(team)).thenReturn(team);
+        underTest.removeMember(teamId, memberId);
+    }
+
+    @Test
+    void throwsExceptionWhenRemovingMemberOfUnknownTeam(){
+        TeamId teamId = getTeamId();
+        TeamMemberId memberId = getMemberId();
+        when(teams.findById(teamId.value())).thenReturn(Optional.empty());
+
+        assertThrows(UnknownTeamIdException.class, () -> underTest.removeMember(teamId, memberId));
+    }
+
+    @Test
     void addsTaskToTeam(){
         TeamId teamId = getTeamId();
         TeamTaskId taskId = getTaskId();

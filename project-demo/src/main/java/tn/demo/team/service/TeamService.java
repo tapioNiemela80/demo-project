@@ -47,6 +47,14 @@ public class TeamService {
     }
 
     @Transactional
+    public void removeMember(TeamId teamId, TeamMemberId memberId){
+        teams.findById(teamId.value())
+                .map(team -> team.removeMember(memberId))
+                .map(teams::save)
+                .orElseThrow(() -> new UnknownTeamIdException(teamId));
+    }
+
+    @Transactional
     public TeamTaskId addTask(TeamId teamId, ProjectTaskId projectTaskId){
         boolean alreadyBelongsToSomeTeam = checkIfAlreadyBelongsToSomeTeam(projectTaskId);
         if(alreadyBelongsToSomeTeam){

@@ -70,9 +70,9 @@ public class Team implements Persistable<UUID> {
         return members.stream().anyMatch(member -> member.hasDetails(memberId, name, profession));
     }
 
-    public boolean containsCompletedTask(TeamTaskId taskId, ProjectTaskId projectTaskId, String name, String description, UUID assignee, ActualSpentTime actualSpentTime){
+    public boolean containsCompletedTask(TeamTaskId taskId, ProjectTaskId projectTaskId, String name, String description, ActualSpentTime actualSpentTime){
         return tasks.stream()
-                .anyMatch(task -> task.hasDetails(taskId, projectTaskId, name, description, assignee, actualSpentTime, TeamTaskStatus.COMPLETED));
+                .anyMatch(task -> task.hasDetails(taskId, projectTaskId, name, description, null, actualSpentTime, TeamTaskStatus.COMPLETED));
     }
 
     public boolean containsUncompletedTask(TeamTaskId taskId, ProjectTaskId projectTaskId, String name, String description, UUID assignee, TeamTaskStatus expectedStatus){
@@ -88,14 +88,35 @@ public class Team implements Persistable<UUID> {
 
     public Team removeTask(TeamTaskId taskId){
         verifyContainsTask(taskId);
-        verifyTaskCanBeDeleted(taskId);
+        verifyTaskCanBeRemoved(taskId);
         var remainingTasks = tasks.stream()
                 .filter(task -> !task.hasId(taskId))
                 .collect(Collectors.toSet());
         return new Team(id, this.name,  version, false, this.members, remainingTasks);
     }
 
-    private void verifyTaskCanBeDeleted(TeamTaskId taskId) {
+    public Team removeMember(TeamMemberId memberId){
+        verifyContainsMember(memberId);
+        verifyMemberCanBeRemoved(memberId);
+        var remainingMembers = members.stream()
+                .filter(member -> !member.hasId(memberId))
+                .collect(Collectors.toSet());
+        return new Team(id, this.name,  version, false, remainingMembers, tasks);
+    }
+
+    private void verifyMemberCanBeRemoved(TeamMemberId memberId) {
+        if(tasks.stream().anyMatch(task -> task.isAssignedTo(memberId))){
+            throw new TeamMemberHasAssignedTasksException(memberId);
+        }
+    }
+
+    private void verifyContainsMember(TeamMemberId memberId) {
+        if(members.stream().noneMatch(member -> member.hasId(memberId))){
+            throw new UnknownTeamMemberIdException(memberId);
+        }
+    }
+
+    private void verifyTaskCanBeRemoved(TeamTaskId taskId) {
         var canBeDeleted = tasks.stream()
                 .filter(task -> task.hasId(taskId))
                 .map(TeamTask::canBeDeleted)

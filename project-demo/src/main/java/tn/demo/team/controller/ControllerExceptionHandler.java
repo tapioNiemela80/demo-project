@@ -21,8 +21,7 @@ public class ControllerExceptionHandler {
                 .body(ex.getMessage());
     }
 
-    @ExceptionHandler(
-            ProjectTimeEstimationWouldBeExceededException.class)
+    @ExceptionHandler(ProjectTimeEstimationWouldBeExceededException.class)
     public ResponseEntity<String> handleProjectTimeEstimationWouldBeExceededException(ProjectTimeEstimationWouldBeExceededException ex) {
         return ResponseEntity
                 .status(HttpStatus.BAD_REQUEST)
@@ -44,7 +43,7 @@ public class ControllerExceptionHandler {
     }
 
     @ExceptionHandler(ProjectAlreadyCompletedException.class)
-    public ResponseEntity<String> ProjectAlreadyCompletedException(ProjectAlreadyCompletedException ex) {
+    public ResponseEntity<String> handleProjectAlreadyCompletedException(ProjectAlreadyCompletedException ex) {
         return ResponseEntity
                 .status(HttpStatus.BAD_REQUEST)
                 .body(ex.getMessage());
@@ -91,4 +90,12 @@ public class ControllerExceptionHandler {
                 .status(HttpStatus.CONFLICT)
                 .body(ex.getMessage());
     }
+
+    @ExceptionHandler(TeamMemberHasAssignedTasksException.class)
+    public ResponseEntity<String> handleTeamMemberHasAssignedTasksException(TeamMemberHasAssignedTasksException ex) {
+        return ResponseEntity
+                .status(HttpStatus.BAD_REQUEST)
+                .body(ex.getMessage());
+    }
+
 }

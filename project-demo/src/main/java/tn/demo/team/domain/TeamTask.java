@@ -62,7 +62,7 @@ class TeamTask {
         if (this.status != TeamTaskStatus.IN_PROGRESS) {
             throw new TaskTransitionNotAllowedException("task not in progress");
         }
-        return new TeamTask(id, projectTaskId, name, description, TeamTaskStatus.COMPLETED, assigneeId, actualTimeSpent.getHours(), actualTimeSpent.getMinutes());
+        return new TeamTask(id, projectTaskId, name, description, TeamTaskStatus.COMPLETED, null, actualTimeSpent.getHours(), actualTimeSpent.getMinutes());
     }
 
     TeamTask unassign() {
@@ -95,6 +95,10 @@ class TeamTask {
             return new ActualSpentTime(actualTimeSpentHours, actualTimeSpentMinutes);
         }
         return null;
+    }
+
+    boolean isAssignedTo(TeamMemberId memberId) {
+        return assigneeId.equals(memberId.value());
     }
 
     @Override

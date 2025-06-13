@@ -20,6 +20,24 @@ class TeamTest {
     }
 
     @Test
+    void removesMember(){
+        Team team = Team.createNew(getTeamId(), "project team");
+        TeamMemberId teamMemberId = getMemberId();
+        Team afterAdd = team.addMember(teamMemberId, "John doe", "tester");
+        assertFalse(team.containsMember(teamMemberId, "John doe", "tester"));
+        assertTrue(afterAdd.containsMember(teamMemberId, "John doe", "tester"));
+        Team afterRemove = afterAdd.removeMember(teamMemberId);
+        assertFalse(afterRemove.containsMember(teamMemberId, "John doe", "tester"));
+    }
+
+    @Test
+    void throwsExceptionWhenTryingToRemoveUnknownMember(){
+        Team team = Team.createNew(getTeamId(), "project team");
+        TeamMemberId teamMemberId = getMemberId();
+        assertThrows(UnknownTeamMemberIdException.class, () -> team.removeMember(teamMemberId));
+    }
+
+    @Test
     void addsTask(){
         Team team = Team.createNew(getTeamId(), "project team");
         TeamTaskId taskId = getTaskId();
@@ -92,6 +110,19 @@ class TeamTest {
         afterAdd = afterAdd.addMember(memberId, "john doe", "tester");
         final Team teamWithAssignedTask = afterAdd.assignTask(taskId, memberId);
         assertTrue(teamWithAssignedTask.containsUncompletedTask(taskId, projectTaskId, "test", "robot framework", memberId.value(), TeamTaskStatus.ASSIGNED));
+    }
+
+    @Test
+    void throwsExceptionWhenTryingToRemoveMemberWhoHasAssignedTask(){
+        Team team = Team.createNew(getTeamId(), "project team");
+        TeamTaskId taskId = getTaskId();
+        TeamMemberId memberId = getMemberId();
+        ProjectTaskId projectTaskId = getProjectTaskId();
+        Team afterAdd = team.addTask(taskId, projectTaskId, "test", "robot framework");
+        afterAdd = afterAdd.addMember(memberId, "john doe", "tester");
+        final Team teamWithAssignedTask = afterAdd.assignTask(taskId, memberId);
+        assertTrue(teamWithAssignedTask.containsUncompletedTask(taskId, projectTaskId, "test", "robot framework", memberId.value(), TeamTaskStatus.ASSIGNED));
+        assertThrows(TeamMemberHasAssignedTasksException.class, () -> teamWithAssignedTask.removeMember(memberId));
     }
 
     @Test
@@ -168,7 +199,7 @@ class TeamTest {
         final Team teamWithAssignedTask = afterAdd.assignTask(taskId, memberId);
         final Team teamWithTaskInProgress = teamWithAssignedTask.markTaskInProgress(taskId);
         final Team teamWithCompletedTask = teamWithTaskInProgress.markTaskCompleted(taskId, ActualSpentTime.fromMinutes(100));
-        assertTrue(teamWithCompletedTask.containsCompletedTask(taskId, projectTaskId, "test", "robot framework", memberId.value(), ActualSpentTime.fromMinutes(100)));
+        assertTrue(teamWithCompletedTask.containsCompletedTask(taskId, projectTaskId, "test", "robot framework",  ActualSpentTime.fromMinutes(100)));
     }
 
     @Test
