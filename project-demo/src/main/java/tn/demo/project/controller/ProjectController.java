@@ -4,8 +4,10 @@ package tn.demo.project.controller;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import tn.demo.project.domain.ProjectId;
+import tn.demo.project.view.ProjectView;
 import tn.demo.project.view.ProjectViewService;
 import tn.demo.project.service.ProjectService;
+import tn.demo.project.view.ProjectsView;
 
 import java.util.List;
 import java.util.UUID;

@@ -1,9 +1,6 @@
 package tn.demo.project.view;
 
 import org.springframework.stereotype.Service;
-import tn.demo.project.controller.ProjectView;
-import tn.demo.project.controller.ProjectsView;
-import tn.demo.project.controller.TaskView;
 import tn.demo.project.controller.TimeEstimation;
 import tn.demo.team.controller.ActualSpentTime;
 
