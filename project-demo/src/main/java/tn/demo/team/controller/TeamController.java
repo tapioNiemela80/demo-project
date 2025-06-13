@@ -7,7 +7,6 @@ import tn.demo.team.domain.TeamId;
 import tn.demo.team.domain.TeamMemberId;
 import tn.demo.team.domain.TeamTaskId;
 import tn.demo.team.repository.TeamViewService;
-import tn.demo.team.service.TeamReadService;
 import tn.demo.team.service.TeamService;
 
 import java.util.List;
@@ -17,12 +16,10 @@ import java.util.UUID;
 @RequestMapping("/teams")
 public class TeamController {
     private final TeamService teamService;
-    private final TeamReadService teamReadService;
     private final TeamViewService teamViewService;
 
-    public TeamController(TeamService teamService, TeamReadService teamReadService, TeamViewService teamViewService) {
+    public TeamController(TeamService teamService, TeamViewService teamViewService) {
         this.teamService = teamService;
-        this.teamReadService = teamReadService;
         this.teamViewService = teamViewService;
     }
 
@@ -84,7 +81,7 @@ public class TeamController {
 
     @GetMapping("/{teamId}")
     public ResponseEntity<TeamView> findById(@PathVariable UUID teamId) {
-        return teamViewService.getTeamView(teamId)
+        return teamViewService.findById(teamId)
                 .map(ResponseEntity::ok)
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }

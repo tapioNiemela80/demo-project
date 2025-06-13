@@ -23,7 +23,7 @@ public class TeamViewService {
                 .toList();
     }
 
-    public Optional<TeamView> getTeamView(UUID teamId) {
+    public Optional<TeamView> findById(UUID teamId) {
         var rows = repository.findTeamViewByTeamId(teamId);
         if(rows.isEmpty()){
             return Optional.empty();
