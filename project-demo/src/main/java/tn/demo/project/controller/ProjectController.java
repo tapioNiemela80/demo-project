@@ -4,7 +4,7 @@ package tn.demo.project.controller;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import tn.demo.project.domain.ProjectId;
-import tn.demo.project.service.ProjectReadService;
+import tn.demo.project.repository.ProjectViewService;
 import tn.demo.project.service.ProjectService;
 
 import java.util.List;
@@ -16,11 +16,11 @@ public class ProjectController {
 
     private final ProjectService service;
 
-    private final ProjectReadService projectReadService;
+    private final ProjectViewService projectViewService;
 
-    public ProjectController(ProjectService service, ProjectReadService projectReadService) {
+    public ProjectController(ProjectService service, ProjectViewService projectViewService) {
         this.service = service;
-        this.projectReadService = projectReadService;
+        this.projectViewService = projectViewService;
     }
 
     @PostMapping
@@ -30,15 +30,15 @@ public class ProjectController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<ProjectViewDto> getOne(@PathVariable UUID id) {
-        return projectReadService.findById(id)
+    public ResponseEntity<ProjectView> getOne(@PathVariable UUID id) {
+        return projectViewService.findOne(id)
                 .map(ResponseEntity::ok)
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     @GetMapping
     public ResponseEntity<List<ProjectsViewDto>> findAll() {
-        return ResponseEntity.ok(projectReadService.findAll());
+        return ResponseEntity.ok(projectViewService.findAll());
     }
 
     @PostMapping("/{id}/tasks")
