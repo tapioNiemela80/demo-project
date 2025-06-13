@@ -1,7 +1,6 @@
 package tn.demo.team.view;
 
 import org.springframework.stereotype.Service;
-import tn.demo.team.controller.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -81,10 +80,10 @@ public class TeamViewService {
                 ));
     }
 
-    private ActualSpentTime actualTimeSpent(Integer actualTimeSpentHours, Integer actualTimeSpentMinutes) {
+    private ActualTimeSpent actualTimeSpent(Integer actualTimeSpentHours, Integer actualTimeSpentMinutes) {
         if(actualTimeSpentHours == null){
             return null;
         }
-        return new ActualSpentTime(actualTimeSpentHours, actualTimeSpentMinutes);
+        return new ActualTimeSpent(actualTimeSpentHours, actualTimeSpentMinutes);
     }
 }

@@ -1,7 +1,5 @@
 package tn.demo.team.view;
 
-import tn.demo.team.controller.ActualSpentTime;
-
 import java.util.List;
 import java.util.UUID;
 
@@ -12,11 +10,11 @@ public record TeamView(
         List<TaskView> tasks
 ) {
 
-    public ActualSpentTime getActualWorkDone(){
+    public ActualTimeSpent getSumOfActualWorkDone(){
         return tasks.stream()
                 .filter(TaskView::isCompleted)
-                .map(TaskView::actualSpentTime)
-                .reduce(ActualSpentTime.zero(), ActualSpentTime::add);
+                .map(TaskView::actualTimeSpent)
+                .reduce(ActualTimeSpent.zero(), ActualTimeSpent::add);
     }
 
 }

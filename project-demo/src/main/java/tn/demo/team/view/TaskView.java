@@ -1,7 +1,5 @@
 package tn.demo.team.view;
 
-import tn.demo.team.controller.ActualSpentTime;
-
 import java.util.UUID;
 
 public record TaskView(
@@ -11,9 +9,9 @@ public record TaskView(
         UUID projectTaskId,
         String status,
         UUID assigneeId,
-        ActualSpentTime actualSpentTime
+        ActualTimeSpent actualTimeSpent
 ) {
     public boolean isCompleted() {
-        return actualSpentTime != null;
+        return actualTimeSpent != null;
     }
 }
