@@ -6,8 +6,10 @@ import tn.demo.project.domain.ProjectTaskId;
 import tn.demo.team.domain.TeamId;
 import tn.demo.team.domain.TeamMemberId;
 import tn.demo.team.domain.TeamTaskId;
+import tn.demo.team.view.TeamView;
 import tn.demo.team.view.TeamViewService;
 import tn.demo.team.service.TeamService;
+import tn.demo.team.view.TeamsView;
 
 import java.util.List;
 import java.util.UUID;
@@ -75,7 +77,7 @@ public class TeamController {
     }
 
     @GetMapping
-    public ResponseEntity<List<TeamsViewDto>> findAll() {
+    public ResponseEntity<List<TeamsView>> findAll() {
         return ResponseEntity.ok(teamViewService.findAll());
     }
 

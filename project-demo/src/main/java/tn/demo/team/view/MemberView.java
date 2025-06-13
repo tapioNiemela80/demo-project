@@ -1,4 +1,4 @@
-package tn.demo.team.controller;
+package tn.demo.team.view;
 
 import java.util.UUID;
 

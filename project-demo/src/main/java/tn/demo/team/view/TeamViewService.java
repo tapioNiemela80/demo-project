@@ -17,9 +17,9 @@ public class TeamViewService {
         this.repository = repository;
     }
 
-    public List<TeamsViewDto> findAll(){
+    public List<TeamsView> findAll(){
         return repository.findTeams().stream()
-                .map(data -> new TeamsViewDto(data.teamId(), data.teamName()))
+                .map(data -> new TeamsView(data.teamId(), data.teamName()))
                 .toList();
     }
 
